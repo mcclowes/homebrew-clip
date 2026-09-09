@@ -9,7 +9,7 @@ class Clip < Formula
 
   def install
     libexec.install "dist", "package.json"
-    (bin/"clip").write_env_script libexec/"dist/main.js", PATH: "#{Formula["node"].opt_bin}:$PATH"
+    (bin/"clip").write_env_script libexec/"dist/main.js", PATH: "#{formula_opt_bin("node")}:$PATH"
   end
 
   test do
@@ -19,7 +19,7 @@ class Clip < Formula
     (testpath/"node.json").write <<~JSON
       {"name":"node","commands":[{"name":"--version","description":"Show runtime version","mutating":false}]}
     JSON
-    system bin/"clip", "register", Formula["node"].opt_bin/"node",
+    system bin/"clip", "register", formula_opt_bin("node")/"node",
            "--purpose", "Run JavaScript", "--schema", testpath/"node.json"
     system bin/"clip", "sync", "--skills-dir", testpath/"skills"
     assert_path_exists testpath/"skills/clip-node/SKILL.md"
