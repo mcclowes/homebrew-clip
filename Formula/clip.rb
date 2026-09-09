@@ -1,8 +1,8 @@
 class Clip < Formula
   desc "Share CLI capabilities between people and agents"
   homepage "https://github.com/mcclowes/clip"
-  url "https://github.com/mcclowes/clip/releases/download/v0.1.0/clip-0.1.0.tar.gz"
-  sha256 "7220080977925c1ffc6cbc557698b7dba7ccb6285ef7e7b1025448ceadb123c5"
+  url "https://github.com/mcclowes/clip/releases/download/v0.2.0/clip-0.2.0.tar.gz"
+  sha256 "1cdaf512bf2936f18c1207e219ae3455f689560b5ee3c1aa9b364d3267ab63c0"
   license "MIT"
 
   depends_on "node"
