@@ -16,6 +16,11 @@ class Clip < Formula
     ENV["CLIP_HOME"] = testpath/"config"
     assert_equal "clip", JSON.parse(shell_output("#{bin}/clip schema"))["name"]
     assert_equal version.to_s, JSON.parse(shell_output("#{bin}/clip --output json --version"))["version"]
+    catalog = JSON.parse(shell_output("#{bin}/clip registry search git"))
+    assert_includes catalog.fetch("items").map { |entry| entry.fetch("id") }, "git"
+    registry_lint = JSON.parse(shell_output("#{bin}/clip lint git"))
+    assert_equal "registry", registry_lint.fetch("source")
+    assert registry_lint.fetch("healthy")
     (testpath/"node.json").write <<~JSON
       {"name":"node","commands":[{"name":"--version","description":"Show runtime version","mutating":false}]}
     JSON
