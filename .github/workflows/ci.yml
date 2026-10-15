@@ -1,0 +1,35 @@
+name: Check CLIP package
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: clip-tap-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  formula:
+    name: Formula checks (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-26]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - name: Set up stable Homebrew and the current tap checkout
+        uses: Homebrew/actions/setup-homebrew@1f8e202ffddf94def7f42f6fa3a482e821489f9c # 2026.07.10.1
+        with:
+          stable: true
+      - name: Check formula style
+        run: brew style Formula/clip.rb
+      - name: Audit the formula
+        run: brew audit --strict mcclowes/clip/clip
+      - name: Install and verify the release archive
+        run: brew install --build-from-source mcclowes/clip/clip
+      - name: Run the offline package smoke tests
+        run: brew test mcclowes/clip/clip
